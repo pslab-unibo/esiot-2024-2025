@@ -24,5 +24,9 @@ void loop() {
     digitalWrite(LED_PIN, LOW); 
     already_pressed = false;
   }
-  // delay(1000);
+  
+  /* this delay is used to avoid bouncing */
+  /* the value can change depending on the quality of the button */
+    
+  delay(50);
 }

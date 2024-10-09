@@ -12,7 +12,7 @@ void loop() {
   int newValue = analogRead(POT_PIN);
   if (newValue != current){
     current = newValue;
-    int intensity = current/4;
+    int intensity = map(current, 0, 1023, 0, 255);
     analogWrite(LED_PIN, intensity);
     Serial.println(current);
   }

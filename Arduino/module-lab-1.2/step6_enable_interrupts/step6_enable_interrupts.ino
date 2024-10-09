@@ -1,5 +1,5 @@
 /**
- * MODIFIED VERSION for SEIOT a.a. 2021-2022 */
+ * MODIFIED VERSION for ESIOT a.a. 2024-2025 */
 
 // include the EnableInterrupt library - see the links in the related topics section above for details
 

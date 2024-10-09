@@ -2,17 +2,11 @@
 #include <avr/power.h>
 #include "Timer.h"
 
-/* 20191111 - THIS EXAMPLE IS NOT WORKING PROPERLY 
- * the system is not going to enter in power save modality 
- */
-
-
-Timer* timer;
+Timer timer;
 
 void setup(){  
   Serial.begin(9600);  
-  timer = new Timer();
-  timer->setupPeriod(10000);
+  timer.setupPeriod(10000);
 }
 
 /*
