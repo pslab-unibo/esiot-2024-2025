@@ -5,7 +5,7 @@
 #include <HTTPClient.h>
 
 const char* ssid = "LittleBarfly";
-const char* password = "esiot-2023";
+const char* password = "esiot-2024-2025";
 
 const char *serverPath = "http://www.google.it";
 

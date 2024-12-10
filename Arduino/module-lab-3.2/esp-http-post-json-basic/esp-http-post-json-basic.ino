@@ -9,9 +9,9 @@
 #include <HTTPClient.h>
 
 const char* ssid = "LittleBarfly";
-const char* password = "esiot-2023";
+const char* password = "esiot-2024-2025";
 
-const char *serviceURI = "http://5d50-137-204-20-124.ngrok-free.app";
+const char *serviceURI = "https://7de5-93-40-208-188.ngrok-free.app"; 
 
 void connectToWifi(const char* ssid, const char* password){
   WiFi.begin(ssid, password);
