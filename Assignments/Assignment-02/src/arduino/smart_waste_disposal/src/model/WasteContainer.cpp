@@ -19,6 +19,7 @@ WasteContainer::WasteContainer(HWPlatform* pHW):pHW(pHW){
 void WasteContainer::init(){
   wasteLevelPercentage = 0;
   lastDistance = MAX_DIST_WASTE;
+  lastTemperature = 20; // some initial value: to be fixed
   _isFull = false;
   this->reset();
   isAvail = true;
@@ -26,11 +27,10 @@ void WasteContainer::init(){
   pHW->getOnLed()->switchOn();
   pHW->getNotAvailLed()->switchOff();
   pHW->getDoorMotor()->off();
-  sync();
 }
 
 bool WasteContainer::isFull(){
-  return wasteLevelPercentage >= 100;
+  return _isFull;
 }
 
 int WasteContainer::getWasteLevelPercentage(){
@@ -38,9 +38,9 @@ int WasteContainer::getWasteLevelPercentage(){
 }
   
 void WasteContainer::sync(){
-
   float dist = lastDistance; 
   currentTemp = lastTemperature;
+  
   if (sensorsCanBeUsed()){
     currentTemp = pHW->getTempSensor()->getTemperature();
     dist = pHW->getWasteDetectorSonar()->getDistance();
@@ -50,25 +50,26 @@ void WasteContainer::sync(){
     lastDistance = dist; 
     lastTemperature = currentTemp;
   }
+  
+  float dd = (dist - MIN_DIST_WASTE);    
+  wasteLevelPercentage = 100 - dd*100/(MAX_DIST_WASTE - MIN_DIST_WASTE);
+  if (wasteLevelPercentage < 0){
+    wasteLevelPercentage = 0;
+  } else if (wasteLevelPercentage >= 100){
+      wasteLevelPercentage = 100;
+  }
 
   static int localCounter = 0;    
   localCounter++;
   if (localCounter % 25 == 0){
     Logger.log("[WC] Temp: " + String(currentTemp).substring(0,5) + " Dist: " + String(dist) + " = " + String(wasteLevelPercentage) + "% " + " (isFull: " + String(_isFull)+")");
-  } 
-  
-  if (!_isFull){
-    float dd = (dist - MIN_DIST_WASTE);    
-    wasteLevelPercentage = 100 - dd*100/(MAX_DIST_WASTE - MIN_DIST_WASTE);
-    if (wasteLevelPercentage < 0){
-      wasteLevelPercentage = 0;
-    } else if (wasteLevelPercentage >= 100){
-      wasteLevelPercentage = 100;
-      _isFull = true;
-      pHW->getOnLed()->switchOff();
-      pHW->getNotAvailLed()->switchOn();
-    }    
   }
+
+  if (!_isFull && wasteLevelPercentage == 100){
+    _isFull = true;
+    pHW->getOnLed()->switchOff();
+    pHW->getNotAvailLed()->switchOn();
+  }     
 }
 
 bool WasteContainer::sensorsCanBeUsed(){

@@ -61,9 +61,6 @@ public class MonitoringAgent extends Thread {
 									view.enableAvailable();
 								}
 								
-								if (isFull && inMaintenance) {
-									view.enableMaintenance();
-								}
 							}
 						} catch (Exception ex) {
 							ex.printStackTrace();

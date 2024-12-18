@@ -3,7 +3,7 @@
 #include "config.h"
 #include "kernel/Logger.h"
 
-#define MAXTEMP 24
+#define MAXTEMP 100
 #define MAXTEMPTIME 10000
 
 ContainerHealthCheckTask::ContainerHealthCheckTask(WasteContainer* pContainer): 

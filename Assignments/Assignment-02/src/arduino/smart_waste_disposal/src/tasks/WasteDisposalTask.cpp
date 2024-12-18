@@ -28,7 +28,7 @@ void WasteDisposalTask::tick(){
         }
         if (pPanel->pressedOpen()){
             setState(DOOR_OPENING);
-        } else if (elapsedTimeInState() > SLEEP_TIMEOUT){
+        } else if (elapsedTimeInState() > SLEEP_TIMEOUT && !pContainer->isFull()){
             setState(SLEEPING);
         }
         break;
