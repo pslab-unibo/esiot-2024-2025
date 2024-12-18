@@ -18,7 +18,7 @@ private:
   
   bool checkAndSetJustEntered();
   
-  enum { NORMAL, PREALARM, ALARM} state;
+  enum { NORMAL, PREALARM, WAITING_MAINTENANCE} state;
   long stateTimestamp;
   bool justEntered;
 

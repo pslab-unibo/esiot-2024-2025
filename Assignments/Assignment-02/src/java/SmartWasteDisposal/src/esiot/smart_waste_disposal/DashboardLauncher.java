@@ -13,16 +13,15 @@ class DashboardLauncher   {
 			System.err.println("Args: <serial port>");
 			System.exit(1);
 		}*/
-		SwingUtilities.invokeAndWait(() -> {
-			view = new DashboardView();
-			log = new LogView();
-		});
-		String portName = "/dev/cu.usbmodem12101";
+
+		view = new DashboardView();
+		log = new LogView();
+		
+		String portName = "/dev/cu.usbmodem212101";
 		DashboardController contr = new DashboardController(portName,view,log);
 		view.registerController(contr);
-		SwingUtilities.invokeLater(() -> {
-			view.setVisible(true);
-			log.setVisible(true);
-		});
+		
+		view.display();
+		log.display();
 	}
 }

@@ -1,8 +1,8 @@
 #ifndef __CONFIG__
 #define __CONFIG__
 
-#define LED_ON_PIN      12
-#define LED_ALARM_PIN   13
+#define LED_ON_PIN              12
+#define LED_MAINTENANCE_PIN     13
 
 #define BT_OPEN_PIN     3
 #define BT_CLOSE_PIN    4

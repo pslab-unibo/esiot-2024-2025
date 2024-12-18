@@ -3,7 +3,7 @@
 #include "config.h"
 #include "kernel/Logger.h"
 
-#define MAXTEMP 30
+#define MAXTEMP 24
 #define MAXTEMPTIME 10000
 
 ContainerHealthCheckTask::ContainerHealthCheckTask(WasteContainer* pContainer): 
@@ -19,19 +19,7 @@ void ContainerHealthCheckTask::tick(){
             Logger.log(F("[CHC] normal"));
             pContainer->reset();
         }
-        /*
-        static int i = 0;
-        i++;
-        if (i % 50 == 0){
-            Logger.log("Temp: " + String(pContainer->getCurrentTemperature()));
-        }
-        */
-       /*
         if (pContainer->getCurrentTemperature() > MAXTEMP){
-            setState(PREALARM);
-        }
-        */
-        if (elapsedTimeInState() > 10000){
             setState(PREALARM);
         }
         break;
@@ -40,22 +28,22 @@ void ContainerHealthCheckTask::tick(){
         if (this->checkAndSetJustEntered()){
             Logger.log(F("[CHC] pre-alarm"));
         }
-        /*
+        
         if (pContainer->getCurrentTemperature() < MAXTEMP){
             setState(NORMAL);
-        }
-        if (elapsedTimeInState() > MAXTEMPTIME){
-            setState(ALARM);
-        }*/
-        if (elapsedTimeInState() > 10000){
-            setState(ALARM);
+        } else if (elapsedTimeInState() > MAXTEMPTIME){
+            setState(WAITING_MAINTENANCE);
         }
         break;       
     }
-    case ALARM: {
+    case WAITING_MAINTENANCE: {
         if (this->checkAndSetJustEntered()){
             Logger.log(F("[CHC] alarm"));
             pContainer->setMaintenance();
+        }
+
+        if (pContainer->isAvailable()){
+            setState(NORMAL);
         }
         break;
     }    

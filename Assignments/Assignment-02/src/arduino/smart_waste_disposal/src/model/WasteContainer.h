@@ -34,7 +34,7 @@ public:
   void sync();
 
 private:
-  bool canSenseDistance();
+  bool sensorsCanBeUsed();
 
   HWPlatform* pHW;
 
@@ -42,6 +42,8 @@ private:
   float currentTemp;
   bool isAvail; 
   bool _isFull;
+  float lastDistance;
+  float lastTemperature;
 };
 
 #endif

@@ -5,7 +5,7 @@ class ProximitySensor {
 
 public:
   virtual float getDistance() = 0;
-  
+
 };
 
 

@@ -16,9 +16,9 @@
 WasteContainer::WasteContainer(HWPlatform* pHW):pHW(pHW){
 }
 
-
 void WasteContainer::init(){
   wasteLevelPercentage = 0;
+  lastDistance = MAX_DIST_WASTE;
   _isFull = false;
   this->reset();
   isAvail = true;
@@ -26,6 +26,7 @@ void WasteContainer::init(){
   pHW->getOnLed()->switchOn();
   pHW->getNotAvailLed()->switchOff();
   pHW->getDoorMotor()->off();
+  sync();
 }
 
 bool WasteContainer::isFull(){
@@ -37,11 +38,28 @@ int WasteContainer::getWasteLevelPercentage(){
 }
   
 void WasteContainer::sync(){
-  currentTemp = pHW->getTempSensor()->getTemperature();
-  if (!_isFull && canSenseDistance()){
-    float dist = pHW->getWasteDetectorSonar()->getDistance();
-    float dd = (MAX_DIST_WASTE - dist);    
-    wasteLevelPercentage = dd*100/(MAX_DIST_WASTE - MIN_DIST_WASTE);
+
+  float dist = lastDistance; 
+  currentTemp = lastTemperature;
+  if (sensorsCanBeUsed()){
+    currentTemp = pHW->getTempSensor()->getTemperature();
+    dist = pHW->getWasteDetectorSonar()->getDistance();
+    if (dist == NO_OBJ_DETECTED){
+      dist = MAX_DIST_WASTE;
+    }
+    lastDistance = dist; 
+    lastTemperature = currentTemp;
+  }
+
+  static int localCounter = 0;    
+  localCounter++;
+  if (localCounter % 25 == 0){
+    Logger.log("[WC] Temp: " + String(currentTemp).substring(0,5) + " Dist: " + String(dist) + " = " + String(wasteLevelPercentage) + "% " + " (isFull: " + String(_isFull)+")");
+  } 
+  
+  if (!_isFull){
+    float dd = (dist - MIN_DIST_WASTE);    
+    wasteLevelPercentage = 100 - dd*100/(MAX_DIST_WASTE - MIN_DIST_WASTE);
     if (wasteLevelPercentage < 0){
       wasteLevelPercentage = 0;
     } else if (wasteLevelPercentage >= 100){
@@ -49,17 +67,11 @@ void WasteContainer::sync(){
       _isFull = true;
       pHW->getOnLed()->switchOff();
       pHW->getNotAvailLed()->switchOn();
-    }
-    /*
-    static int i = 0;    
-    i++;
-    if (i % 25 == 0){
-      Logger.log("Dist: " + String(dist) + " perc: " + String(wasteLevelPercentage) + " isFull: " + String(_isFull));
-    }*/ 
+    }    
   }
 }
 
-bool WasteContainer::canSenseDistance(){
+bool WasteContainer::sensorsCanBeUsed(){
   return !pHW->getDoorMotor()->isOn();
 }
 
@@ -136,4 +148,3 @@ void WasteContainer::setMaintenance(){
 float WasteContainer::getCurrentTemperature(){
   return this->currentTemp;
 }
-

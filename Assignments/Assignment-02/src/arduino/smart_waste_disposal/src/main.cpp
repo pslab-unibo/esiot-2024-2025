@@ -17,6 +17,8 @@
 #include "tasks/ContainerHealthCheckTask.h"
 #include "tasks/OperatorManTask.h"
 
+// #define __TESTING_HW__
+
 Scheduler sched;
 
 HWPlatform* pHWPlatform;
@@ -33,6 +35,7 @@ void setup() {
   pHWPlatform = new HWPlatform();
   pHWPlatform->init();
 
+#ifndef __TESTING_HW__
   pUserPanel = new UserPanel(pHWPlatform);
   pUserPanel->init();
 
@@ -42,10 +45,6 @@ void setup() {
   pDashboard = new Dashboard(pWasteContainer);
   pDashboard->init();
 
-/*
-  Task* pTestHWTask = new TestHWTask(pHWPlatform);
-  pTestHWTask->init(1000);
-*/
   Task* pWasteDisposalTask = new WasteDisposalTask(pWasteContainer, pUserPanel);
   pWasteDisposalTask->init(50);
 
@@ -58,7 +57,14 @@ void setup() {
   sched.addTask(pContainerHealthCheckTask);
   sched.addTask(pWasteDisposalTask);
   sched.addTask(pOperatorManTask);
+#endif
 
+#ifdef __TESTING_HW__
+  /* Testing */
+  Task* pTestHWTask = new TestHWTask(pHWPlatform);
+  pTestHWTask->init(1000);
+  sched.addTask(pTestHWTask);
+#endif
 }
 
 void loop() {

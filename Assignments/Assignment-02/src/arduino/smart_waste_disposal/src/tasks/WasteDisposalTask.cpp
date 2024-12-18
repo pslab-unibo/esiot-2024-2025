@@ -8,7 +8,7 @@
 #define DOOR_TIME  1000
 #define SPILLING_MAX_TIME 20000 
 #define WASTE_RECEIVED_TIME 2000 
-#define SLEEP_TIMEOUT 10000
+#define SLEEP_TIMEOUT 120000
 
 WasteDisposalTask::WasteDisposalTask(WasteContainer* pContainer, UserPanel* pPanel): 
     pContainer(pContainer), pPanel(pPanel) {

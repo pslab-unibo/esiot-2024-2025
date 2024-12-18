@@ -28,11 +28,11 @@ class DashboardView extends JFrame implements ActionListener  {
 	public DashboardView(){
 		super(".:: Smart Waste Disposal System ::.");
 		setSize(600,150);
-
+		this.setResizable(false);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		mainPanel.add(Box.createRigidArea(new Dimension(0,20)));
-
+		
 		JPanel infoLine = new JPanel();
 		infoLine.setLayout(new BoxLayout(infoLine, BoxLayout.LINE_AXIS));
 		containerState = new JTextField("--");
@@ -56,7 +56,7 @@ class DashboardView extends JFrame implements ActionListener  {
 		mainPanel.setPreferredSize(new Dimension(200,20));
 
 		JPanel buttonPanel = new JPanel();
-		maintenanceDone = new JButton("Maintenance Done");
+		maintenanceDone = new JButton("Restore");
 		maintenanceDone.setEnabled(false);
 		maintenanceDone.addActionListener(this);
 		dischargeContainer = new JButton("Discharge");
@@ -74,6 +74,12 @@ class DashboardView extends JFrame implements ActionListener  {
 			public void windowClosing(WindowEvent ev){
 				System.exit(-1);
 			}
+		});
+	}
+	
+	public void display() {
+		SwingUtilities.invokeLater(() -> {
+			this.setVisible(true);
 		});
 	}
 
@@ -119,28 +125,6 @@ class DashboardView extends JFrame implements ActionListener  {
 			dischargeContainer.setEnabled(true);
 		});
 	}
-
-	/*
-	public void updateSamples(Sample[] samples) {
-		try {
-			SwingUtilities.invokeAndWait(() -> {
-				graphicPanel.updateSamples(samples);
-			});
-		} catch (Exception ex) {}
-	}
-
-	public void startMaintenanceForRefilling() {
-		SwingUtilities.invokeLater(() -> {
-			refill.setEnabled(true);
-		});
-	}
-
-	public void startMaintenanceForRecovering() {
-		SwingUtilities.invokeLater(() -> {
-			recover.setEnabled(true);
-		});
-	}
-	*/
 	
 	public void actionPerformed(ActionEvent ev){
 		  try {

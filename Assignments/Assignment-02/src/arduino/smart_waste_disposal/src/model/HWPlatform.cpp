@@ -5,6 +5,7 @@
 #include "config.h"
 #include "devices/Led.h"
 #include "devices/LightSensorImpl.h"
+#include "devices/TempSensorTMP36.h"
 #include "devices/TempSensorLM35.h"
 #include "devices/servo_motor_impl.h"
 #include "kernel/Logger.h"
@@ -16,7 +17,7 @@ HWPlatform::HWPlatform(){
   pButtonOpen = new ButtonImpl(BT_OPEN_PIN);
   pButtonClose = new ButtonImpl(BT_CLOSE_PIN);
   pLedOn = new Led(LED_ON_PIN);
-  pLedInMaintenance = new Led(LED_ALARM_PIN);
+  pLedInMaintenance = new Led(LED_MAINTENANCE_PIN);
   pSonarWasteDetector = new Sonar(SONAR_ECHO_PIN, SONAR_TRIG_PIN, 10000);
   pPirUserDetector = new Pir(PIR_PIN);
   pTempSensor = new TempSensorLM35(TEMP_SENSOR_PIN);
